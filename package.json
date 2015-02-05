@@ -1,7 +1,7 @@
 {
   "name": "rivets-dobt",
   "description": "Declarative data binding facility.",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": "Adam Becker",
   "url": "http://rivetsjs.com",
   "main": "./dist/rivets.js",
