@@ -24,13 +24,13 @@ class Rivets.Binding
   # containing view, the DOM node, the type of binding, the model object and the
   # keypath at which to listen for changes.
   constructor: (@view, @el, @type, @key, @keypath, @options = {}) ->
-    unless @binder = @view.binders[type]
+    unless @binder = @view.binders[@type]
       for identifier, value of @view.binders
         if identifier isnt '*' and identifier.indexOf('*') isnt -1
           regexp = new RegExp "^#{identifier.replace('*', '.+')}$"
-          if regexp.test type
+          if regexp.test @type
             @binder = value
-            @args = new RegExp("^#{identifier.replace('*', '(.+)')}$").exec type
+            @args = new RegExp("^#{identifier.replace('*', '(.+)')}$").exec @type
             @args.shift()
 
     @binder or= @view.binders['*']
@@ -397,7 +397,7 @@ Rivets.binders =
             @marker
 
           @marker.parentNode.insertBefore itemEl, previous.nextSibling ? null
-          options = 
+          options =
             binders: @view.options.binders
             formatters: @view.options.binders
             config: {}

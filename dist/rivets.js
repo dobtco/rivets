@@ -19,7 +19,6 @@
   Rivets.Binding = (function() {
     function Binding(view, el, type, key, keypath, options) {
       var identifier, regexp, value, _ref;
-
       this.view = view;
       this.el = el;
       this.type = type;
@@ -33,15 +32,15 @@
       this.sync = __bind(this.sync, this);
       this.set = __bind(this.set, this);
       this.formattedValue = __bind(this.formattedValue, this);
-      if (!(this.binder = this.view.binders[type])) {
+      if (!(this.binder = this.view.binders[this.type])) {
         _ref = this.view.binders;
         for (identifier in _ref) {
           value = _ref[identifier];
           if (identifier !== '*' && identifier.indexOf('*') !== -1) {
             regexp = new RegExp("^" + (identifier.replace('*', '.+')) + "$");
-            if (regexp.test(type)) {
+            if (regexp.test(this.type)) {
               this.binder = value;
-              this.args = new RegExp("^" + (identifier.replace('*', '(.+)')) + "$").exec(type);
+              this.args = new RegExp("^" + (identifier.replace('*', '(.+)')) + "$").exec(this.type);
               this.args.shift();
             }
           }
@@ -59,7 +58,6 @@
 
     Binding.prototype.formattedValue = function(value) {
       var args, formatter, id, _i, _len, _ref;
-
       _ref = this.formatters;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         formatter = _ref[_i];
@@ -77,7 +75,6 @@
 
     Binding.prototype.set = function(value) {
       var _ref;
-
       value = value instanceof Function && !this.binder["function"] ? this.formattedValue(value.call(this.model)) : this.formattedValue(value);
       return (_ref = this.binder.routine) != null ? _ref.call(this, this.el, value) : void 0;
     };
@@ -88,7 +85,6 @@
 
     Binding.prototype.publish = function() {
       var args, formatter, id, value, _i, _len, _ref, _ref1, _ref2;
-
       value = Rivets.Util.getInputValue(this.el);
       _ref = this.formatters.slice(0).reverse();
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -104,7 +100,6 @@
 
     Binding.prototype.bind = function() {
       var dependency, keypath, model, _i, _len, _ref, _ref1, _ref2, _results;
-
       if ((_ref = this.binder.bind) != null) {
         _ref.call(this, this.el);
       }
@@ -137,7 +132,6 @@
 
     Binding.prototype.unbind = function() {
       var dependency, keypath, model, _i, _len, _ref, _ref1, _ref2, _results;
-
       if ((_ref = this.binder.unbind) != null) {
         _ref.call(this, this.el);
       }
@@ -175,8 +169,7 @@
 
   Rivets.View = (function() {
     function View(els, models, options) {
-      var k, option, v, _base, _i, _len, _ref, _ref1, _ref2, _ref3;
-
+      var k, option, v, _base, _i, _len, _ref, _ref1, _ref2;
       this.els = els;
       this.models = models;
       this.options = options != null ? options : {};
@@ -205,7 +198,7 @@
         _ref2 = Rivets[option];
         for (k in _ref2) {
           v = _ref2[k];
-          if ((_ref3 = (_base = this[option])[k]) == null) {
+          if ((_base = this[option])[k] == null) {
             _base[k] = v;
           }
         }
@@ -215,7 +208,6 @@
 
     View.prototype.bindingRegExp = function() {
       var prefix;
-
       prefix = this.config.prefix;
       if (prefix) {
         return new RegExp("^data-" + prefix + "-");
@@ -227,13 +219,11 @@
     View.prototype.build = function() {
       var bindingRegExp, el, node, parse, skipNodes, _i, _j, _len, _len1, _ref, _ref1,
         _this = this;
-
       this.bindings = [];
       skipNodes = [];
       bindingRegExp = this.bindingRegExp();
       parse = function(node) {
         var attribute, attributes, binder, context, ctx, dependencies, identifier, key, keypath, n, options, path, pipe, pipes, regexp, splitPath, type, value, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _ref3;
-
         if (__indexOf.call(skipNodes, node) < 0) {
           _ref = node.attributes;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -271,7 +261,6 @@
               type = attribute.name.replace(bindingRegExp, '');
               pipes = (function() {
                 var _l, _len3, _ref4, _results;
-
                 _ref4 = attribute.value.split('|');
                 _results = [];
                 for (_l = 0, _len3 = _ref4.length; _l < _len3; _l++) {
@@ -282,7 +271,6 @@
               })();
               context = (function() {
                 var _l, _len3, _ref4, _results;
-
                 _ref4 = pipes.shift().split('<');
                 _results = [];
                 for (_l = 0, _len3 = _ref4.length; _l < _len3; _l++) {
@@ -331,7 +319,6 @@
 
     View.prototype.select = function(fn) {
       var binding, _i, _len, _ref, _results;
-
       _ref = this.bindings;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -345,7 +332,6 @@
 
     View.prototype.bind = function() {
       var binding, _i, _len, _ref, _results;
-
       _ref = this.bindings;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -357,7 +343,6 @@
 
     View.prototype.unbind = function() {
       var binding, _i, _len, _ref, _results;
-
       _ref = this.bindings;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -369,7 +354,6 @@
 
     View.prototype.sync = function() {
       var binding, _i, _len, _ref, _results;
-
       _ref = this.bindings;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -381,7 +365,6 @@
 
     View.prototype.publish = function() {
       var binding, _i, _len, _ref, _results;
-
       _ref = this.select(function(b) {
         return b.binder.publishes;
       });
@@ -395,7 +378,6 @@
 
     View.prototype.update = function(models) {
       var binding, key, model, _results;
-
       if (models == null) {
         models = {};
       }
@@ -405,7 +387,6 @@
         this.models[key] = model;
         _results.push((function() {
           var _i, _len, _ref, _results1;
-
           _ref = this.select(function(b) {
             return b.key === key;
           });
@@ -427,7 +408,6 @@
   Rivets.Util = {
     bindEvent: function(el, event, handler, view) {
       var fn;
-
       fn = function(ev) {
         return handler.call(this, ev, view);
       };
@@ -463,7 +443,6 @@
     },
     getInputValue: function(el) {
       var o, _i, _len, _results;
-
       if (window.jQuery != null) {
         el = jQuery(el);
         switch (el[0].type) {
@@ -510,7 +489,6 @@
       },
       routine: function(el, value) {
         var _ref;
-
         if (el.type === 'radio') {
           return el.checked = ((_ref = el.value) != null ? _ref.toString() : void 0) === (value != null ? value.toString() : void 0);
         } else {
@@ -528,7 +506,6 @@
       },
       routine: function(el, value) {
         var _ref;
-
         if (el.type === 'radio') {
           return el.checked = ((_ref = el.value) != null ? _ref.toString() : void 0) !== (value != null ? value.toString() : void 0);
         } else {
@@ -555,7 +532,6 @@
       },
       routine: function(el, value) {
         var o, _i, _len, _ref, _ref1, _ref2, _results;
-
         if (window.jQuery != null) {
           el = jQuery(el);
           if ((value != null ? value.toString() : void 0) !== ((_ref = el.val()) != null ? _ref.toString() : void 0)) {
@@ -600,7 +576,6 @@
       },
       unbind: function(el, collection) {
         var view, _i, _len, _ref, _results;
-
         if (this.iterated != null) {
           _ref = this.iterated;
           _results = [];
@@ -613,7 +588,6 @@
       },
       routine: function(el, collection) {
         var data, e, item, itemEl, k, m, n, options, previous, v, view, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _ref3, _ref4, _results;
-
         if (this.iterated != null) {
           _ref = this.iterated;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -668,7 +642,6 @@
     },
     "class-*": function(el, value) {
       var elClass;
-
       elClass = " " + el.className + " ";
       if (!value === (elClass.indexOf(" " + this.args[0] + " ") !== -1)) {
         return el.className = value ? "" + el.className + " " + this.args[0] : elClass.replace(" " + this.args[0] + " ", ' ').trim();
@@ -695,7 +668,6 @@
     exports.config = Rivets.config;
     exports.configure = function(options) {
       var property, value;
-
       if (options == null) {
         options = {};
       }
@@ -706,7 +678,6 @@
     };
     return exports.bind = function(el, models, options) {
       var view;
-
       if (models == null) {
         models = {};
       }
