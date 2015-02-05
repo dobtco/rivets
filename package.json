@@ -1,19 +1,19 @@
 {
-  "name": "rivets",
+  "name": "rivets-dobt",
   "description": "Declarative data binding facility.",
-  "version": "0.5.2",
-  "author": "Michael Richards",
+  "version": "0.1.0",
+  "author": "Adam Becker",
   "url": "http://rivetsjs.com",
   "main": "./dist/rivets.js",
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/mikeric/rivets/blob/master/LICENSE"
+      "url": "https://github.com/dobtco/rivets/blob/master/LICENSE"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/mikeric/rivets.git"
+    "url": "https://github.com/dobtco/rivets.git"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
