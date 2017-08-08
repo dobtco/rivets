@@ -137,7 +137,7 @@ class Rivets.Binding
     @model = @view.models[@key]
     @bind()
 
-  # Returns elements value
+ # Returns elements value
  getValue: (el) =>
    (@binder.getValue || Rivets.Util.getInputValue) el
 
