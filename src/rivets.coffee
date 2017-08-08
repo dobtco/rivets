@@ -76,7 +76,7 @@ class Rivets.Binding
 
   # Publishes the value currently set on the input element back to the model.
   publish: =>
-    value = Rivets.Util.getInputValue @el
+    value = @getValue @elk
 
     for formatter in @formatters.slice(0).reverse()
       args = formatter.split /\s+/
@@ -136,6 +136,10 @@ class Rivets.Binding
     @unbind()
     @model = @view.models[@key]
     @bind()
+
+  # Returns elements value
+ getValue: (el) =>
+   (@binder.getValue || Rivets.Util.getInputValue) el
 
 # Rivets.View
 # -----------
